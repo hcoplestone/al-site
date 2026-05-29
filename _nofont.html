@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ITG Strategy House 2026–2029</title>
+<style>
+@font-face{font-family:'PPM';src:url('data:font/otf;base64,') format('opentype');font-weight:400}
+@font-face{font-family:'PPN';src:url('data:font/otf;base64,') format('opentype');font-weight:400}
+@font-face{font-family:'PPN';src:url('data:font/otf;base64,') format('opentype');font-weight:500}
+:root{--dark:#192B28;--sky:#85C4C4;--warm:#FFFBF0;--grey1:#F5EEDA;--grey2:#EDE6D3;--font-h:'PPM',Georgia,serif;--font-b:'PPN',system-ui,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#111;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px;font-family:var(--font-b);overflow-x:auto;zoom:1.25}
+
+/* CONTROLS */
+.controls{width:1400px;display:flex;justify-content:space-between;align-items:center;padding:10px 0 12px;gap:10px}
+.ctrl-title{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4)}
+.ctrl-right{display:flex;gap:8px;align-items:center}
+.btn{font-family:var(--font-b);font-size:11px;padding:7px 16px;border-radius:4px;border:1px solid rgba(255,255,255,.2);background:transparent;color:rgba(255,255,255,.5);cursor:pointer;letter-spacing:.05em}
+.btn:hover{border-color:var(--sky);color:var(--sky)}
+.btn-act{border-color:var(--sky);color:var(--sky);background:rgba(133,196,196,.1)}
+.save-ind{font-size:10px;color:rgba(133,196,196,.6);letter-spacing:.05em}
+@media print{.controls{display:none}}
+
+/* HOUSE */
+.house{width:1400px}
+
+/* ROOF */
+.roof-wrap{height:212px;position:relative;overflow:hidden}
+.roof-svg{position:absolute;inset:0;width:100%;height:100%}
+.roof-eyebrow{position:absolute;top:0;left:0;right:0;text-align:center;padding-top:9px;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,251,240,.28)}
+.roof-text{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:680px;text-align:center;padding-bottom:22px}
+.roof-bhag{font-family:var(--font-h);font-size:18px;color:#FFFBF0;line-height:1.4;margin-bottom:8px}
+.roof-bhag-lbl{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,251,240,.38);margin-bottom:5px}
+.roof-vis{font-size:9.5px;color:rgba(255,251,240,.52);line-height:1.6;font-style:italic}
+.roof-vis-lbl{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,251,240,.3);margin-bottom:3px;margin-top:8px}
+
+/* NICHE/MISSION */
+.nb{background:var(--grey1);border:2px solid var(--dark);border-bottom:none;padding:10px 28px;display:flex;align-items:flex-start}
+.nb-block{display:flex;align-items:flex-start;gap:10px;flex:1}
+.nb-sep{width:1px;background:#C8C0A8;align-self:stretch;margin:0 22px;flex-shrink:0}
+.nb-lbl{font-size:7.5px;letter-spacing:2px;text-transform:uppercase;color:var(--sky);font-weight:500;white-space:nowrap;padding-top:2px;min-width:56px}
+.nb-txt{font-size:9.5px;color:var(--dark);opacity:.72;line-height:1.55;font-style:italic}
+
+/* TARGETS STRIPS (shared styles) */
+.targets{background:var(--grey2);display:flex;border:2px solid var(--dark);border-top:none;border-bottom:none}
+.tgt-aside{writing-mode:vertical-lr;transform:rotate(180deg);font-size:6.5px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(25,43,40,.32);padding:10px 10px;white-space:nowrap;flex-shrink:0}
+.tgt{flex:1;padding:10px 10px;text-align:center;border-right:1px solid #C8C0A8;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.tgt:last-child{border-right:none}
+.tgt-v{font-family:var(--font-h);font-size:17px;color:var(--dark);margin-bottom:2px}
+.tgt-l{font-size:7px;letter-spacing:.8px;text-transform:uppercase;color:var(--dark);opacity:.58}
+.tgt-b{font-size:7px;color:var(--dark);opacity:.35;margin-top:2px}
+/* Bottom annual targets strip sits on bottom border */
+.targets-bottom{border-bottom:2px solid var(--dark)}
+
+/* FORMULA */
+.formula{background:var(--dark);display:flex;align-items:stretch;border:2px solid var(--dark);border-top:none;border-bottom:none}
+.f-aside{writing-mode:vertical-lr;transform:rotate(180deg);font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--sky);padding:10px 11px;opacity:.85;white-space:nowrap;flex-shrink:0}
+.f-els{flex:1;display:flex;align-items:stretch}
+.fe{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:12px 10px;text-align:center;border-right:1px solid rgba(255,251,240,.07)}
+.fe:last-child{border-right:none}
+.fe-n{font-size:8px;color:rgba(255,251,240,.32);letter-spacing:2.5px;margin-bottom:3px}
+.fe-t{font-family:var(--font-h);font-size:15px;color:#FFFBF0;margin-bottom:3px}
+.fe-s{font-size:9px;color:rgba(255,251,240,.48)}
+.f-plus{padding:0 4px;display:flex;align-items:center;color:var(--sky);font-size:22px;opacity:.4;flex-shrink:0}
+
+/* PILLARS */
+.pillars{display:flex;align-items:stretch;border:2px solid var(--dark);border-top:none;border-bottom:none;min-height:490px}
+.pillar{flex:1;display:flex;flex-direction:column;border-right:1.5px solid #C8C0A8}
+.pillar:last-child{border-right:none}
+.ph{padding:14px 14px 12px;flex-shrink:0}
+.ph-n{font-size:7.5px;letter-spacing:2.5px;color:rgba(25,43,40,.5);margin-bottom:4px;text-transform:uppercase}
+.ph-t{font-family:var(--font-h);font-size:17px;color:var(--dark);line-height:1.15;margin-bottom:6px}
+.ph-tag{font-size:9px;color:var(--dark);opacity:.62;font-style:italic;line-height:1.5}
+.pb{flex:1;padding:11px 14px 12px;background:var(--warm);display:flex;flex-direction:column}
+.init{list-style:none;flex:1;margin-bottom:8px}
+.li{font-size:9px;color:var(--dark);opacity:.72;padding:3.5px 0 3.5px 12px;position:relative;line-height:1.45;border-bottom:1px solid rgba(25,43,40,.06);display:flex;justify-content:space-between;align-items:flex-start;gap:4px}
+.li:last-child{border-bottom:none}
+.li-txt{flex:1}
+.li::before{content:'—';position:absolute;left:0;opacity:.32}
+.inaction{background:rgba(133,196,196,.09);border-left:2.5px solid var(--sky);padding:7px 10px;margin-bottom:8px;border-radius:0 3px 3px 0;flex-shrink:0}
+.ia-lbl{font-size:7px;letter-spacing:1.8px;text-transform:uppercase;color:var(--sky);font-weight:500;display:block;margin-bottom:4px}
+.ia-i{font-size:8.5px;color:var(--dark);opacity:.68;line-height:1.45;padding-left:10px;position:relative;margin-bottom:3px;display:flex;justify-content:space-between;align-items:flex-start;gap:4px}
+.ia-i::before{content:'↗';position:absolute;left:0;opacity:.45;font-size:8px}
+.ia-i:last-child{margin-bottom:0}
+.ia-txt{flex:1}
+.ftags{display:flex;gap:4px;flex-wrap:wrap;padding-top:7px;border-top:1px solid rgba(25,43,40,.08);align-items:center;flex-shrink:0}
+.ft{display:inline-flex;align-items:center;gap:4px;border-radius:3px;padding:2px 7px;font-size:7px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--dark)}
+
+/* FOUNDATION */
+.foundation{background:var(--dark);display:flex;align-items:stretch;border:2px solid var(--dark);border-top:1.5px solid #2E4A46;border-bottom:none}
+.fnd-aside{writing-mode:vertical-lr;transform:rotate(180deg);font-size:6.5px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,251,240,.25);padding:12px 10px;white-space:nowrap;flex-shrink:0}
+.fnd-s{flex:1;padding:14px 20px 16px;border-right:1px solid rgba(255,251,240,.07);display:flex;flex-direction:column}
+.fnd-s:last-child{border-right:none}
+.fnd-t{font-family:var(--font-h);font-size:17px;color:#FFFBF0;margin-bottom:6px}
+.fnd-d{font-size:9px;color:rgba(255,251,240,.52);line-height:1.65;margin-bottom:10px}
+/* Foundation in-action */
+.fnd-ia{border-top:1px solid rgba(255,251,240,.1);padding-top:10px;margin-top:auto}
+.fnd-ia-hdr{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.fnd-ia-lbl{font-size:7px;letter-spacing:1.8px;text-transform:uppercase;color:var(--sky);font-weight:500}
+.fnd-ia-i{font-size:8.5px;color:rgba(255,251,240,.55);line-height:1.5;padding-left:10px;position:relative;margin-bottom:3px;display:flex;justify-content:space-between;align-items:flex-start;gap:4px}
+.fnd-ia-i::before{content:'—';position:absolute;left:0;opacity:.35}
+.fnd-ia-i:last-child{margin-bottom:0}
+.fnd-ia-txt{flex:1}
+
+/* EDIT MODE */
+.eonly{display:none!important}.eonly-f{display:none!important}
+.edit-mode .eonly{display:block!important}.edit-mode .eonly-f{display:flex!important}
+[contenteditable]{outline:none;cursor:text;border-bottom:1px dashed var(--sky)}
+[contenteditable]:focus{background:rgba(133,196,196,.08)}
+[contenteditable][data-ph]:empty::before{content:attr(data-ph);color:#b0a890;font-style:italic}
+.delbtn{background:none;border:none;cursor:pointer;color:#b0a890;font-size:13px;padding:0 2px;flex-shrink:0;line-height:1}
+.delbtn:hover{color:#c85050}
+.addbtn{background:none;border:1px dashed #C8C0A8;border-radius:3px;color:#b0a890;cursor:pointer;font-size:9px;padding:4px 10px;font-family:var(--font-b);margin-top:5px;display:block;letter-spacing:.03em;width:100%}
+.addbtn:hover{border-color:var(--sky);color:var(--sky)}
+.addbtn-sm{width:auto;padding:3px 8px;margin-top:4px}
+.tag-del{background:none;border:none;cursor:pointer;color:rgba(25,43,40,.4);font-size:11px;padding:0;line-height:1}
+.tag-del:hover{color:#c85050}
+.tag-addbtn{background:none;border:1px dashed rgba(25,43,40,.2);border-radius:3px;color:rgba(25,43,40,.4);cursor:pointer;font-size:9px;padding:2px 8px;font-family:var(--font-b)}
+.tag-addbtn:hover{border-color:var(--sky);color:var(--sky)}
+.fnd-tag-del{background:none;border:none;cursor:pointer;color:rgba(133,196,196,.4);font-size:11px;padding:0 2px;line-height:1}
+.fnd-tag-del:hover{color:#c85050}
+/* Dark-bg addbtn variant */
+.addbtn-dark{background:none;border:1px dashed rgba(133,196,196,.2);border-radius:3px;color:rgba(133,196,196,.4);cursor:pointer;font-size:9px;padding:4px 10px;font-family:var(--font-b);margin-top:6px;display:block;letter-spacing:.03em;width:100%}
+.addbtn-dark:hover{border-color:var(--sky);color:var(--sky)}
+</style>
+</head>
+<body>
+<div class="controls" id="ctrl">
+  <span class="ctrl-title">ITG Strategy House 2026–2029</span>
+  <div class="ctrl-right">
+    <span class="save-ind" id="saveind" style="display:none">✓ saved</span>
+    <button class="btn" id="resetbtn" style="display:none" onclick="reset()">Reset defaults</button>
+    <button class="btn" id="embtn" onclick="toggleEM()">Edit mode</button>
+  </div>
+</div>
+<div id="app"></div>
+
+<script>
+const SK='itg_sh_v2';
+let S,em=false;
+const DF={
+  eyebrow:'Inside Travel Group · Strategy House 2026–2029 · Confidential',
+  bhag:"ITG will become the world's number one specialist travel company, measuring success on the triple bottom line of People, Planet and Profit",
+  vision:'To build a global cultural adventure tour operator which leads the travel industry towards a more sustainable future and protects travel for future generations',
+  niche:'Expertly designed, seamlessly delivered Cultural Adventure trips for clients who value caring, personalised service at every interaction',
+  mission:'To make our clients happy, to be a place to work that our teams recommend and to have a positive impact on our destinations and local communities',
+  formula:[
+    {num:'I',title:'Customer Obsession',sub:'Every touchpoint, every interaction'},
+    {num:'II',title:'Specialism',sub:'Knowledge that serves the customer'},
+    {num:'III',title:'Business for Good',sub:'When everyone wins, the customer wins too'}
+  ],
+  pillars:[
+    {num:'01',name:'People',color:'#8DB7D9',tagline:'Empowered teams, aligned to deliver',inActionLabel:'In action 2026',
+     initiatives:["Branch P&L ownership — US & Australia fully accountable, others following","Living wage for all roles — not an aspiration, a commitment","Structured talent, training & leadership development","Enhanced benefits — pay, progression, culture","Psychological safety & shared ownership as the standard"],
+     inAction:["US & Australia branches: full P&L accountability live","Japan leadership offsite: co-creating our culture together"],
+     tags:['Specialism','Business for Good']},
+    {num:'02',name:'Customer Experience',color:'#85C4C4',tagline:'Elite service at every touchpoint',inActionLabel:'In action 2026',
+     initiatives:["WhatsApp on-ground support — communicating on clients' terms","Luxury & Family segments: expanded, invested, differentiated","Dedicated InsideJapan website channel","No-quibble guarantee — we own the outcome, always","NPS +90 as a hard, measured, reported target"],
+     inAction:["WhatsApp live — zero friction at the critical moment","InsideJapan channel launched; Family product refreshed"],
+     tags:['Customer Obsession','Specialism']},
+    {num:'03',name:'Acquisition',color:'#6D98C0',tagline:'Grow smarter — repeat, recommend, reach',inActionLabel:'In action 2026',
+     initiatives:["InsideJapan → InsideAsia: systematic repeat pathway, actively measured","Branch-led acquisition plans — US & Australia own their markets","Data-driven SEO & PPC — first page for intent-led searches","New addressable segments identified and built for","M&A strategic clarity: criteria defined, opportunity understood"],
+     inAction:["US & Australia building branch-owned acquisition plans","InsideAsia repeat engine under active development"],
+     tags:['Customer Obsession','Specialism']},
+    {num:'04',name:'Systems & Process',color:'#C8BCA8',tagline:'The infrastructure of excellence',inActionLabel:'In action 2026',
+     initiatives:["Full replatform of booking system — major CapEx investment","AI-enabled consultant tools — faster, better, at scale","Improved client documents across all touchpoints","Third-party channel manager integration","Real-time data dashboards — every team, everything they need"],
+     inAction:["Booking replatform underway — better CX, lower costs","AI tooling scoped; consultant workflow improvements in progress"],
+     tags:['Customer Obsession']},
+    {num:'05',name:'Impact',color:'#FFCDA5',tagline:'Business that leaves things better',inActionLabel:'In action 2026',
+     initiatives:["Impact Fund — up to 5% of profits to conservation & communities","ITG Foundation forming — independent vehicle for good","Giant salamander conservation partnership (active)","Borneo reforestation programme (active)","All suppliers vetted against sustainability criteria","On-time supplier payment: policy, always","Under-visited destinations — actively steering clients there"],
+     inAction:["Salamander & Borneo reforestation live","Foundation forming; Impact Fund committed and active"],
+     tags:['Business for Good','Customer Obsession']}
+  ],
+  brand:{title:'Brand',desc:"The fuel that makes everything grow. Not just a logo — a cultural identity that attracts clients, retains talent and shapes behaviour across the whole business. Distinctive, bold, irreverent. The antithesis of category cliché.",inActionLabel:'IN ACTION 2026',inAction:[]},
+  culture:{title:'Culture',desc:"How we show up for each other every day. Not a poster — the lived reality of working at ITG. Psychological safety, mutual accountability, shared pride in what we build. Defined here, in Japan, for everyone.",inActionLabel:'IN ACTION 2026',inAction:[]},
+  targets:[
+    {value:'£170m',label:'Departure revenue',base:'from £82m'},
+    {value:'33%',label:'InsideAsia share',base:'from 12%'},
+    {value:'5%',label:'Repeat rate',base:'from 1.67%'},
+    {value:'25%',label:'Via recommendation',base:'from 18%'},
+    {value:'50%',label:'US revenue share',base:'from 33%'},
+    {value:'NPS +90',label:'Customer satisfaction',base:''}
+  ],
+  annualLabel:'2026 Objectives',
+  annualTargets:[
+    {value:'',label:'Target 1',base:''},
+    {value:'',label:'Target 2',base:''},
+    {value:'',label:'Target 3',base:''},
+    {value:'',label:'Target 4',base:''},
+    {value:'',label:'Target 5',base:''},
+    {value:'',label:'Target 6',base:''}
+  ]
+};
+
+function load(){try{const d=JSON.parse(localStorage.getItem(SK));if(!d)return JSON.parse(JSON.stringify(DF));if(!d.annualLabel)d.annualLabel=DF.annualLabel;if(!d.annualTargets)d.annualTargets=JSON.parse(JSON.stringify(DF.annualTargets));d.pillars.forEach((p,i)=>{if(!p.inActionLabel)p.inActionLabel=DF.pillars[i].inActionLabel});if(!d.brand.inActionLabel)d.brand.inActionLabel=DF.brand.inActionLabel;if(!d.brand.inAction)d.brand.inAction=[];if(!d.culture.inActionLabel)d.culture.inActionLabel=DF.culture.inActionLabel;if(!d.culture.inAction)d.culture.inAction=[];return d}catch{return JSON.parse(JSON.stringify(DF))}}
+function sv(){localStorage.setItem(SK,JSON.stringify(S));flashSave()}
+function flashSave(){const el=document.getElementById('saveind');if(el){el.style.display='inline';clearTimeout(el._t);el._t=setTimeout(()=>el.style.display='none',1800)}}
+function reset(){if(confirm('Reset all content to defaults?')){S=JSON.parse(JSON.stringify(DF));sv();R()}}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function deref(path){const keys=path.split('.');let o=S;for(const k of keys)o=isNaN(k)?o[k]:o[parseInt(k)];return o}
+function setRef(path,val){const keys=path.split('.');let o=S;for(let i=0;i<keys.length-1;i++)o=isNaN(keys[i])?o[keys[i]]:o[parseInt(keys[i])];const l=keys[keys.length-1];isNaN(l)?o[l]=val:o[parseInt(l)]=val;sv()}
+function addItem(path,tpl){const a=deref(path);a.push(tpl!==undefined?tpl:'');sv();R()}
+function delItem(path,idx){const a=deref(path);a.splice(idx,1);sv();R()}
+
+function tagColor(t){const s=(t||'').toLowerCase();if(s.includes('obsession')||s.includes('customer'))return'#85C4C4';if(s.includes('specialism'))return'#8DB7D9';if(s.includes('good')||s.includes('business for'))return'#FFCDA5';return'#D8D0BC'}
+
+function renderList(path,items){
+  const lis=items.map((it,i)=>`<li class="li"><span class="li-txt" data-f="${path}.${i}">${esc(it)}</span><button class="delbtn eonly-f" onclick="delItem('${path}',${i})">×</button></li>`).join('');
+  return `<ul class="init">${lis}<li class="eonly" style="list-style:none;padding-left:0"><button class="addbtn" onclick="addItem('${path}','')">+ Add initiative</button></li></ul>`;
+}
+function renderIA(path,items,dark){
+  const cls=dark?'fnd-ia-i':'ia-i'; const txtcls=dark?'fnd-ia-txt':'ia-txt';
+  const divs=items.map((it,i)=>`<div class="${cls}"><span class="${txtcls}" data-f="${path}.${i}">${esc(it)}</span><button class="delbtn ${dark?'fnd-tag-del':''} eonly-f" onclick="delItem('${path}',${i})">×</button></div>`).join('');
+  const btn=dark?`<button class="addbtn-dark eonly" onclick="addItem('${path}','')">+ Add example</button>`:`<div class="eonly"><button class="addbtn" onclick="addItem('${path}','')">+ Add example</button></div>`;
+  return `<div>${divs}${btn}</div>`;
+}
+function renderTags(pi,tags){
+  const path=`pillars.${pi}.tags`;
+  const chips=tags.map((t,i)=>`<span class="ft" style="background:${tagColor(t)}"><span data-f="${path}.${i}">${esc(t)}</span><button class="tag-del eonly-f" onclick="delItem('${path}',${i})">×</button></span>`).join('');
+  return `<div class="ftags">${chips}<button class="tag-addbtn eonly" onclick="addItem('${path}','New tag')">+ tag</button></div>`;
+}
+function renderTargetsRow(targets,asidePath,asideText,extraClass){
+  const aside=asidePath
+    ?`<div class="tgt-aside" data-f="${asidePath}">${esc(asideText)}</div>`
+    :`<div class="tgt-aside">${esc(asideText)}</div>`;
+  const cols=targets.map((t,i)=>{
+    const p=asidePath?`annualTargets.${i}`:`targets.${i}`;
+    return`<div class="tgt"><div class="tgt-v" data-f="${p}.value">${esc(t.value)||'&nbsp;'}</div><div class="tgt-l" data-f="${p}.label">${esc(t.label)}</div><div class="tgt-b" data-f="${p}.base">${esc(t.base)||'&nbsp;'}</div></div>`;
+  }).join('');
+  return`<div class="targets ${extraClass||''}">${aside}${cols}</div>`;
+}
+
+function buildHTML(){
+  const s=S;
+  return `<div class="house">
+  <div class="roof-wrap">
+    <svg class="roof-svg" viewBox="0 0 1400 212" preserveAspectRatio="none"><polygon points="700,4 15,212 1385,212" fill="#192B28"/></svg>
+    <div class="roof-eyebrow" data-f="eyebrow">${esc(s.eyebrow)}</div>
+    <div class="roof-text">
+      <div class="roof-bhag-lbl">BHAG</div>
+      <div class="roof-bhag" data-f="bhag" data-ph="Enter BHAG...">${esc(s.bhag)}</div>
+      <div class="roof-vis-lbl">Vision</div>
+      <div class="roof-vis" data-f="vision" data-ph="Enter vision...">${esc(s.vision)}</div>
+    </div>
+  </div>
+
+  <div class="nb">
+    <div class="nb-block"><span class="nb-lbl">Our Niche</span><span class="nb-txt" data-f="niche" data-ph="Describe your niche...">${esc(s.niche)}</span></div>
+    <div class="nb-sep"></div>
+    <div class="nb-block"><span class="nb-lbl">Our Mission</span><span class="nb-txt" data-f="mission" data-ph="Enter mission...">${esc(s.mission)}</span></div>
+  </div>
+
+  ${renderTargetsRow(s.targets,null,'2029 Objectives','')}
+
+  <div class="formula">
+    <div class="f-aside">The ITG Formula</div>
+    <div class="f-els">
+      ${s.formula.map((f,i)=>`<div class="fe"><div class="fe-n">${esc(f.num)}</div><div class="fe-t" data-f="formula.${i}.title">${esc(f.title)}</div><div class="fe-s" data-f="formula.${i}.sub">${esc(f.sub)}</div></div>${i<s.formula.length-1?'<div class="f-plus">+</div>':''}`).join('')}
+    </div>
+  </div>
+
+  <div class="pillars">
+    ${s.pillars.map((p,i)=>`<div class="pillar">
+      <div class="ph" style="background:${p.color}">
+        <div class="ph-n">${esc(p.num)}</div>
+        <div class="ph-t" data-f="pillars.${i}.name">${esc(p.name)}</div>
+        <div class="ph-tag" data-f="pillars.${i}.tagline" data-ph="Tagline...">${esc(p.tagline)}</div>
+      </div>
+      <div class="pb">
+        ${renderList('pillars.'+i+'.initiatives',p.initiatives)}
+        <div class="inaction">
+          <span class="ia-lbl" data-f="pillars.${i}.inActionLabel">${esc(p.inActionLabel)}</span>
+          ${renderIA('pillars.'+i+'.inAction',p.inAction,false)}
+        </div>
+        ${renderTags(i,p.tags)}
+      </div>
+    </div>`).join('')}
+  </div>
+
+  <div class="foundation">
+    <div class="fnd-aside">Underpins everything above</div>
+    <div class="fnd-s">
+      <div class="fnd-t" data-f="brand.title">${esc(s.brand.title)}</div>
+      <div class="fnd-d" data-f="brand.desc">${esc(s.brand.desc)}</div>
+      <div class="fnd-ia">
+        <div class="fnd-ia-hdr">
+          <span class="fnd-ia-lbl" data-f="brand.inActionLabel">${esc(s.brand.inActionLabel)}</span>
+        </div>
+        ${renderIA('brand.inAction',s.brand.inAction,true)}
+      </div>
+    </div>
+    <div style="width:1px;background:rgba(255,251,240,.07);margin:14px 0"></div>
+    <div class="fnd-s">
+      <div class="fnd-t" data-f="culture.title">${esc(s.culture.title)}</div>
+      <div class="fnd-d" data-f="culture.desc">${esc(s.culture.desc)}</div>
+      <div class="fnd-ia">
+        <div class="fnd-ia-hdr">
+          <span class="fnd-ia-lbl" data-f="culture.inActionLabel">${esc(s.culture.inActionLabel)}</span>
+        </div>
+        ${renderIA('culture.inAction',s.culture.inAction,true)}
+      </div>
+    </div>
+  </div>
+
+  ${renderTargetsRow(s.annualTargets,'annualLabel',s.annualLabel,'targets-bottom')}
+</div>`;
+}
+
+function R(){
+  document.getElementById('app').innerHTML=buildHTML();
+  const btn=document.getElementById('embtn');
+  const rst=document.getElementById('resetbtn');
+  if(em){
+    document.body.classList.add('edit-mode');
+    btn.textContent='✓ Editing';btn.classList.add('btn-act');
+    if(rst)rst.style.display='inline-block';
+    document.querySelectorAll('[data-f]').forEach(el=>{
+      el.contentEditable='true';
+      el.addEventListener('blur',function(){setRef(this.dataset.f,this.innerText.trim())});
+    });
+  }else{
+    document.body.classList.remove('edit-mode');
+    btn.textContent='Edit mode';btn.classList.remove('btn-act');
+    if(rst)rst.style.display='none';
+  }
+}
+function toggleEM(){em=!em;R()}
+window.toggleEM=toggleEM;window.addItem=addItem;window.delItem=delItem;window.reset=reset;
+S=load();R();
+</script>
+</body>
+</html>
