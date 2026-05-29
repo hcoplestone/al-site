@@ -7,6 +7,9 @@ import { next } from '@vercel/edge';
 // Set it in Vercel:  Project → Settings → Environment Variables
 //   SITE_PASSWORD = <your password>   (Production, Preview, Development)
 // then redeploy. Any username is accepted; only the password is checked.
+//
+// Note: env-var changes only take effect on a new deployment, so any commit
+// (like this one) triggers a fresh Vercel build that reads the latest value.
 
 export const config = {
   // Gate everything except the favicon (avoids a second auth prompt for it).
