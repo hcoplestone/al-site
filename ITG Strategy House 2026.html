@@ -129,12 +129,15 @@ body{background:#111;min-height:100vh;display:flex;flex-direction:column;align-i
   <span class="ctrl-title">ITG Strategy House 2026–2029</span>
   <div class="ctrl-right">
     <span class="save-ind" id="saveind" style="display:none">✓ saved</span>
+    <button class="btn" onclick="StrategyStore.openInfo()" title="How saving & versions work" aria-label="How saving works" style="padding:0;width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-style:italic;font-family:Georgia,serif;font-size:14px">i</button>
+    <button class="btn" onclick="StrategyStore.openVersions()">Versions</button>
     <button class="btn" id="resetbtn" style="display:none" onclick="reset()">Reset defaults</button>
     <button class="btn" id="embtn" onclick="toggleEM()">Edit mode</button>
   </div>
 </div>
 <div id="app"></div>
 
+<script src="/store.js"></script>
 <script>
 const SK='itg_sh_v2';
 let S,em=false;
@@ -193,7 +196,7 @@ const DF={
 };
 
 function load(){try{const d=JSON.parse(localStorage.getItem(SK));if(!d)return JSON.parse(JSON.stringify(DF));if(!d.annualLabel)d.annualLabel=DF.annualLabel;if(!d.annualTargets)d.annualTargets=JSON.parse(JSON.stringify(DF.annualTargets));d.pillars.forEach((p,i)=>{if(!p.inActionLabel)p.inActionLabel=DF.pillars[i].inActionLabel});if(!d.brand.inActionLabel)d.brand.inActionLabel=DF.brand.inActionLabel;if(!d.brand.inAction)d.brand.inAction=[];if(!d.culture.inActionLabel)d.culture.inActionLabel=DF.culture.inActionLabel;if(!d.culture.inAction)d.culture.inAction=[];return d}catch{return JSON.parse(JSON.stringify(DF))}}
-function sv(){localStorage.setItem(SK,JSON.stringify(S));flashSave()}
+function sv(){localStorage.setItem(SK,JSON.stringify(S));flashSave();StrategyStore.queueDraftSave(S)}
 function flashSave(){const el=document.getElementById('saveind');if(el){el.style.display='inline';clearTimeout(el._t);el._t=setTimeout(()=>el.style.display='none',1800)}}
 function reset(){if(confirm('Reset all content to defaults?')){S=JSON.parse(JSON.stringify(DF));sv();R()}}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
@@ -326,7 +329,23 @@ function R(){
 }
 function toggleEM(){em=!em;R()}
 window.toggleEM=toggleEM;window.addItem=addItem;window.delItem=delItem;window.reset=reset;
-S=load();R();
+// --- Server-backed persistence + versioning -------------------------------
+StrategyStore.init({
+  doc:'house',
+  getState:()=>S,
+  applyState:(state)=>{S=state;sv();R();},
+});
+S=load();R();                                   // instant paint from local cache
+(async()=>{
+  try{
+    const d=await StrategyStore.loadDraft();
+    if(d&&d.state){                             // a server draft exists → it wins
+      S=d.state;localStorage.setItem(SK,JSON.stringify(S));R();
+    }else{
+      StrategyStore.queueDraftSave(S);          // seed server from local/defaults
+    }
+  }catch(e){/* offline — keep the local copy */}
+})();
 </script>
 </body>
 </html>
